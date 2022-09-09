@@ -3,14 +3,15 @@
 
 namespace ToyRobot
 {
-    Commander::Commander( std::shared_ptr<Robot> robot, std::queue<std::string> &command_queue ) : command_queue_( command_queue )
+    Commander::Commander( std::queue<std::string> &command_queue ) : command_queue_( command_queue ) {}
+
+    void Commander::TrackRobot( std::unique_ptr<Robot> robot )
     {
-        robot_ = robot;
+        robot_ = move( robot );
     }
 
     void Commander::InterpretCommands()
     {
-        // TODO: Go through the command_queue_ and use regex (smatch() to get all match groups) to determine which private function to call to execute a given command.
         while( ! command_queue_.empty() )
         {
             std::string command = command_queue_.front();
@@ -22,7 +23,6 @@ namespace ToyRobot
             {
                 if( robot_->IsPlaced() )
                 {
-                    // TODO: Call other functions for other commands.
                     if( IsRegexMatch( command, matches, command_regexes_["REPORT"] ) )
                         CommandReport();
                     else if( IsRegexMatch( command, matches, command_regexes_["MOVE"] ) )

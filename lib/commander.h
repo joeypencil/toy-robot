@@ -20,11 +20,10 @@ namespace ToyRobot
         public:
             Commander() = delete;
             ~Commander() = default;
-            // TODO: Implement Observer Pattern by changing the second parameter to a smart pointer to an IInputReader.
-            explicit Commander( std::shared_ptr<Robot> robot, std::queue<std::string> &command_queue );
+            explicit Commander( std::queue<std::string> &command_queue );
 
         private:
-            std::shared_ptr<Robot> robot_;
+            std::unique_ptr<Robot> robot_ = nullptr;
             std::queue<std::string> &command_queue_;
 
             std::unordered_map<std::string, Regex> command_regexes_
@@ -36,6 +35,7 @@ namespace ToyRobot
             };
 
         public:
+            void TrackRobot( std::unique_ptr<Robot> robot );
             void InterpretCommands();
 
         private:
