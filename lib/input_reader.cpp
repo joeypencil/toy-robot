@@ -3,43 +3,44 @@
 
 namespace ToyRobot
 {
-    void ConsoleReader::ReadLines()
+    bool ConsoleReader::ReadCommand()
     {
-        std::string line;
-        
-        while( std::getline( std::cin, line ) )
+        std::getline( std::cin, command_ );
+
+        if( ! command_.empty() )
         {
-            if( ! line.empty() )
-            {
-                clean_command( line );
-                command_queue_.push( line );
-            }
-            else
-                break;
+            clean_command( command_ );
+            return true;
         }
+
+        return false;
     }
 
-    FileReader::FileReader( std::string &file_path )
+    FileReader::~FileReader()
+    {
+        filestream_.close();
+    }
+
+    void FileReader::SetFilepath( std::string &file_path )
     {
         file_path_ = file_path;
     }
 
-    void FileReader::ReadLines()
+    void FileReader::ReadAllLines()
     {
-        std::ifstream filestream;
-        filestream.open( file_path_ );
+        filestream_.open( file_path_ );
 
-        if( ! filestream )
+        if( ! filestream_.is_open() )
         {
-            std::cerr << "ERROR: Could not open file '" << file_path_ << "'" << std::endl;
+            std::cerr << "ERROR: Unable to open file '" << file_path_ << "'" << std::endl;
+            filestream_.close();
             exit( 1 );
         }
 
-        std::string line;
-
-        while( ! filestream.eof() )
+        while( ! filestream_.eof() )
         {
-            std::getline( filestream, line );
+            std::string line;
+            std::getline( filestream_, line );
 
             if( ! line.empty() )
             {
@@ -48,7 +49,19 @@ namespace ToyRobot
             }
         }
 
-        filestream.close();
+        filestream_.close();
+    }
+
+    bool FileReader::ReadCommand()
+    {
+        if( ! command_queue_.empty() )
+        {
+            command_ = command_queue_.front();
+            command_queue_.pop();
+            return true;
+        }
+
+        return false;
     }
 
     void trim_left( std::string &command )

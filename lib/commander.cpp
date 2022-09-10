@@ -3,36 +3,41 @@
 
 namespace ToyRobot
 {
-    Commander::Commander( std::queue<std::string> &command_queue ) : command_queue_( command_queue ) {}
+    Commander::Commander( std::shared_ptr<IInputReader> input_reader )
+    {
+        input_reader_ = input_reader;
+    }
 
     void Commander::TrackRobot( std::unique_ptr<Robot> robot )
     {
         robot_ = move( robot );
     }
 
-    void Commander::InterpretCommands()
+    void Commander::PlayWithRobot()
     {
-        while( ! command_queue_.empty() )
+        while( input_reader_->ReadCommand() )
         {
-            std::string command = command_queue_.front();
-            Matches matches;
+            InterpretCommand( input_reader_->command_ );
+        }
+    }
 
-            if( IsRegexMatch( command, matches, command_regexes_["PLACE"] ) )
-                CommandPlace( matches );
-            else
+    void Commander::InterpretCommand( std::string command )
+    {
+        Matches matches;
+
+        if( IsRegexMatch( command, matches, command_regexes_["PLACE"] ) )
+            CommandPlace( matches );
+        else
+        {
+            if( robot_->IsPlaced() )
             {
-                if( robot_->IsPlaced() )
-                {
-                    if( IsRegexMatch( command, matches, command_regexes_["REPORT"] ) )
-                        CommandReport();
-                    else if( IsRegexMatch( command, matches, command_regexes_["MOVE"] ) )
-                        CommandMove();
-                    else if( IsRegexMatch( command, matches, command_regexes_["ROTATE"] ) )
-                        CommandRotate( matches );
-                }
+                if( IsRegexMatch( command, matches, command_regexes_["REPORT"] ) )
+                    CommandReport();
+                else if( IsRegexMatch( command, matches, command_regexes_["MOVE"] ) )
+                    CommandMove();
+                else if( IsRegexMatch( command, matches, command_regexes_["ROTATE"] ) )
+                    CommandRotate( matches );
             }
-            
-            command_queue_.pop();
         }
     }
 

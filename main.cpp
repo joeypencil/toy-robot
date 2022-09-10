@@ -14,22 +14,22 @@ int main( int argc, char **argv )
 
     if( argc < 2 )
     {
-        std::unique_ptr<ConsoleReader> console_reader = std::make_unique<ConsoleReader>();
-        console_reader->ReadLines();
+        std::shared_ptr<ConsoleReader> console_reader = std::make_shared<ConsoleReader>();
 
-        std::unique_ptr<Commander> commander = std::make_unique<Commander>( console_reader->command_queue_ );
+        std::unique_ptr<Commander> commander = std::make_unique<Commander>( console_reader );
         commander->TrackRobot( move( robot ) );
-        commander->InterpretCommands();
+        commander->PlayWithRobot();
     }
     else if( argc == 2 )
     {
         std::string filename( argv[1] );
-        std::unique_ptr<FileReader> file_reader = std::make_unique<FileReader>( filename );
-        file_reader->ReadLines();
+        std::shared_ptr<FileReader> file_reader = std::make_shared<FileReader>();
+        file_reader->SetFilepath( filename );
+        file_reader->ReadAllLines();
 
-        std::unique_ptr<Commander> commander = std::make_unique<Commander>( file_reader->command_queue_ );
+        std::unique_ptr<Commander> commander = std::make_unique<Commander>( file_reader );
         commander->TrackRobot( move( robot ) );
-        commander->InterpretCommands();
+        commander->PlayWithRobot();
     }
     else
     {

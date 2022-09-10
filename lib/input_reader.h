@@ -18,10 +18,10 @@ namespace ToyRobot
             virtual ~IInputReader() = default;
 
         public:
-            std::queue<std::string> command_queue_;
+            std::string command_;
 
         public:
-            virtual void ReadLines() = 0;
+            virtual bool ReadCommand() = 0;
     };
 
     class ConsoleReader : public IInputReader
@@ -31,21 +31,24 @@ namespace ToyRobot
             ~ConsoleReader() = default;
 
         public:
-            void ReadLines() override;
+            bool ReadCommand() override;
     };
 
     class FileReader : public IInputReader
     {
         public:
-            FileReader() = delete;
-            ~FileReader() = default;
-            explicit FileReader( std::string &file_path );
+            FileReader() = default;
+            ~FileReader();
 
         private:
             std::string file_path_;
+            std::ifstream filestream_;
+            std::queue<std::string> command_queue_;
 
         public:
-            void ReadLines() override;
+            void SetFilepath( std::string &file_path );
+            void ReadAllLines();
+            bool ReadCommand() override;
     };
 
     static void trim_left( std::string &command );

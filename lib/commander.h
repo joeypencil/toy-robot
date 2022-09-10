@@ -18,13 +18,13 @@ namespace ToyRobot
     class Commander
     {
         public:
-            Commander() = delete;
+            Commander() = default;
             ~Commander() = default;
-            explicit Commander( std::queue<std::string> &command_queue );
+            Commander( std::shared_ptr<IInputReader> input_reader );
 
         private:
             std::unique_ptr<Robot> robot_ = nullptr;
-            std::queue<std::string> &command_queue_;
+            std::shared_ptr<IInputReader> input_reader_ = nullptr;
 
             std::unordered_map<std::string, Regex> command_regexes_
             {
@@ -36,7 +36,8 @@ namespace ToyRobot
 
         public:
             void TrackRobot( std::unique_ptr<Robot> robot );
-            void InterpretCommands();
+            void PlayWithRobot();
+            void InterpretCommand( std::string command );
 
         private:
             bool IsRegexMatch( std::string &command, Matches &matches, Regex &regex );
