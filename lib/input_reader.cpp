@@ -16,12 +16,7 @@ namespace ToyRobot
         return false;
     }
 
-    FileReader::~FileReader()
-    {
-        filestream_.close();
-    }
-
-    void FileReader::SetFilepath( std::string &file_path )
+    void FileReader::SetFilepath( const std::string &file_path )
     {
         file_path_ = file_path;
     }
@@ -33,7 +28,6 @@ namespace ToyRobot
         if( ! filestream_.is_open() )
         {
             std::cerr << "ERROR: Unable to open file '" << file_path_ << "'" << std::endl;
-            filestream_.close();
             exit( 1 );
         }
 

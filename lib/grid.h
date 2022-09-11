@@ -22,13 +22,13 @@ namespace ToyRobot
         public:
             Grid() = delete;
             ~Grid() = default;
-            explicit Grid( Coordinates &coordinates );
+            explicit Grid( const Coordinates &coordinates );
 
         private:
             Coordinates coordinates_;
 
         public:
-            bool IsWithinGrid( Coordinates &coordinates );
+            bool IsWithinGrid( const Coordinates &coordinates ) const;
     };
 }
 

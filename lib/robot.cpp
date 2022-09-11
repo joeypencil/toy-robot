@@ -49,6 +49,6 @@ namespace ToyRobot
         else if( face_direction_angle_ < 0 )    // Facing NORTH then turned LEFT, should face WEST.
             face_direction_angle_ = 270;
 
-        face_direction_ = angle_direction_map_[face_direction_angle_];
+        face_direction_ = angle_direction_map_.at( face_direction_angle_ );
     }
 }

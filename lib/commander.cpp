@@ -3,9 +3,8 @@
 
 namespace ToyRobot
 {
-    Commander::Commander( std::shared_ptr<IInputReader> input_reader )
+    Commander::Commander( std::shared_ptr<IInputReader> input_reader ) : input_reader_{ input_reader }
     {
-        input_reader_ = input_reader;
     }
 
     void Commander::TrackRobot( std::unique_ptr<Robot> robot )
@@ -21,32 +20,32 @@ namespace ToyRobot
         }
     }
 
-    void Commander::InterpretCommand( std::string command )
+    void Commander::InterpretCommand( std::string &command )
     {
         Matches matches;
 
-        if( IsRegexMatch( command, matches, command_regexes_["PLACE"] ) )
+        if( IsRegexMatch( command, matches, command_regexes_.at( "PLACE" ) ) )
             CommandPlace( matches );
         else
         {
             if( robot_->IsPlaced() )
             {
-                if( IsRegexMatch( command, matches, command_regexes_["REPORT"] ) )
+                if( IsRegexMatch( command, matches, command_regexes_.at( "REPORT" ) ) )
                     CommandReport();
-                else if( IsRegexMatch( command, matches, command_regexes_["MOVE"] ) )
+                else if( IsRegexMatch( command, matches, command_regexes_.at( "MOVE" ) ) )
                     CommandMove();
-                else if( IsRegexMatch( command, matches, command_regexes_["ROTATE"] ) )
+                else if( IsRegexMatch( command, matches, command_regexes_.at( "ROTATE" ) ) )
                     CommandRotate( matches );
             }
         }
     }
 
-    bool Commander::IsRegexMatch( std::string &command, Matches &matches, Regex &regex )
+    bool Commander::IsRegexMatch( const std::string &command, Matches &matches, const Regex &regex )
     {
         return ( std::regex_search( command, matches, regex ) ) ? true : false;
     }
 
-    void Commander::CommandPlace( Matches &matches )
+    void Commander::CommandPlace( const Matches &matches )
     {
         if( matches.size() < 5 )
             return;
@@ -95,10 +94,12 @@ namespace ToyRobot
             robot_->SetCoordinates( pending_location );
     }
 
-    void Commander::CommandRotate( Matches &matches )
+    void Commander::CommandRotate( const Matches &matches )
     {
         int current_face_direction_angle = robot_->GetFaceDirectionAngle();
-        robot_->SetFaceDirectionAngle( current_face_direction_angle + robot_->rotation_map_[matches.str( 1 )] );
+        std::string &rotation_direction = matches.str( 1 );
+        
+        robot_->SetFaceDirectionAngle( current_face_direction_angle + robot_->rotation_map_.at( rotation_direction ) );
     }
 
     void Commander::CommandReport()

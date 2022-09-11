@@ -26,7 +26,7 @@ namespace ToyRobot
             std::unique_ptr<Robot> robot_ = nullptr;
             std::shared_ptr<IInputReader> input_reader_ = nullptr;
 
-            std::unordered_map<std::string, Regex> command_regexes_
+            const std::unordered_map<std::string, const Regex> command_regexes_
             {
                 { "PLACE", Regex( "(PLACE)\\s+(\\d+),\\s*(\\d+),\\s*(NORTH|SOUTH|EAST|WEST)" ) },
                 { "MOVE", Regex( "(MOVE)" ) },
@@ -37,14 +37,14 @@ namespace ToyRobot
         public:
             void TrackRobot( std::unique_ptr<Robot> robot );
             void PlayWithRobot();
-            void InterpretCommand( std::string command );
+            void InterpretCommand( std::string &command );
 
         private:
-            bool IsRegexMatch( std::string &command, Matches &matches, Regex &regex );
+            bool IsRegexMatch( const std::string &command, Matches &matches, const Regex &regex );
 
-            void CommandPlace( Matches &matches );
+            void CommandPlace( const Matches &matches );
             void CommandMove();
-            void CommandRotate( Matches &matches );
+            void CommandRotate( const Matches &matches );
             void CommandReport();
     };
 }

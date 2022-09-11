@@ -24,7 +24,7 @@ namespace ToyRobot
             std::string face_direction_;
 
         public:
-            std::unordered_map<int, std::string> angle_direction_map_
+            const std::unordered_map<int, std::string> angle_direction_map_
             {
                 { 0, "NORTH" },
                 { 90, "EAST" },
@@ -32,7 +32,7 @@ namespace ToyRobot
                 { 270, "WEST" }
             };
 
-            std::unordered_map<int, Coordinates> angle_coordinates_map_
+            const std::unordered_map<int, Coordinates> angle_coordinates_map_
             {
                 { 0, Coordinates( 0, 1 ) },    // NORTH
                 { 90, Coordinates( 1, 0 ) },   // EAST
@@ -40,7 +40,7 @@ namespace ToyRobot
                 { 270, Coordinates( -1, 0 ) }  // WEST
             };
 
-            std::unordered_map<std::string, int> rotation_map_
+            const std::unordered_map<std::string, int> rotation_map_
             {
                 { "LEFT", -90 },
                 { "RIGHT", 90 }

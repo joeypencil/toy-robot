@@ -38,7 +38,7 @@ namespace ToyRobot
     {
         public:
             FileReader() = default;
-            ~FileReader();
+            ~FileReader() = default;
 
         private:
             std::string file_path_;
@@ -46,7 +46,7 @@ namespace ToyRobot
             std::queue<std::string> command_queue_;
 
         public:
-            void SetFilepath( std::string &file_path );
+            void SetFilepath( const std::string &file_path );
             void ReadAllLines();
             bool ReadCommand() override;
     };
