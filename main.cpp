@@ -1,4 +1,5 @@
 #include "input_reader.h"
+#include "coordinates.h"
 #include "grid.h"
 #include "robot.h"
 #include "commander.h"
@@ -15,17 +16,15 @@ int main( int argc, char *argv[] )
     }
 
     int length = 4, width = 4;
-    Coordinates coordinates( length, width );
-    auto grid = std::make_shared<Grid>( coordinates );
-    auto robot = std::make_unique<Robot>( grid );
+    Coordinates dimensions( length, width );
+    auto grid = std::make_shared<Grid>( dimensions );
+    auto robot = std::make_unique<Robot>();
+    std::unique_ptr<Commander> commander = nullptr;
 
     if( argc < 2 )
     {
         auto console_reader = std::make_shared<ConsoleReader>();
-
-        auto commander = std::make_unique<Commander>( console_reader );
-        commander->TrackRobot( move( robot ) );
-        commander->PlayWithRobot();
+        commander = std::make_unique<Commander>( console_reader, grid );
     }
     else if( argc == 2 )
     {
@@ -36,10 +35,11 @@ int main( int argc, char *argv[] )
         if( ! file_reader->ReadAllLines() )
             return 1;
 
-        auto commander = std::make_unique<Commander>( file_reader );
-        commander->TrackRobot( move( robot ) );
-        commander->PlayWithRobot();
+        commander = std::make_unique<Commander>( file_reader, grid );
     }
+
+    commander->TrackRobot( move( robot ) );
+    commander->PlayWithRobot();
 
     return 0;
 }

@@ -3,8 +3,10 @@
 
 namespace ToyRobot
 {
-    Commander::Commander( std::shared_ptr<IInputReader> input_reader ) : input_reader_{ input_reader }
+    Commander::Commander( std::shared_ptr<IInputReader> input_reader, std::shared_ptr<IGrid> grid )
     {
+        input_reader_ = input_reader;
+        grid_ = grid;
     }
 
     void Commander::TrackRobot( std::unique_ptr<Robot> robot )
@@ -58,24 +60,24 @@ namespace ToyRobot
         y = stoi( matches.str( 3 ) );
         face_direction = matches.str( 4 );
 
-        if( ! robot_->GetGrid()->IsWithinGrid( Coordinates( x, y ) ) )
+        if( ! grid_->IsWithinGrid( Coordinates( x, y ) ) )
             return;
 
         face_direction_angle = GetAngleFromDirection( face_direction );
 
-        robot_->SetCoordinates( Coordinates( x, y ) );
+        robot_->SetLocation( Coordinates( x, y ) );
         robot_->SetFaceDirectionAngle( face_direction_angle );
     }
 
     void Commander::CommandMove()
     {
-        Coordinates current_coordinates = robot_->GetCoordinates();
+        Coordinates current_location = robot_->GetLocation();
         int face_direction_angle = robot_->GetFaceDirectionAngle();
         Coordinates pending_move;
         
         try
         {
-            pending_move = robot_->angle_coordinates_map_.at( face_direction_angle );
+            pending_move = robot_->angle_move_map_.at( face_direction_angle );
         }
         catch( std::out_of_range &ex )
         {
@@ -83,10 +85,13 @@ namespace ToyRobot
             return;
         }
 
-        Coordinates pending_location( current_coordinates.x + pending_move.x, current_coordinates.y + pending_move.y );
+        int pending_x = current_location.GetX() + pending_move.GetX();
+        int pending_y = current_location.GetY() + pending_move.GetY();
 
-        if( robot_->GetGrid()->IsWithinGrid( pending_location ) )
-            robot_->SetCoordinates( pending_location );
+        Coordinates pending_location( pending_x, pending_y );
+
+        if( grid_->IsWithinGrid( pending_location ) )
+            robot_->SetLocation( pending_location );
     }
 
     void Commander::CommandRotate( const Matches &matches )
@@ -99,9 +104,9 @@ namespace ToyRobot
 
     void Commander::CommandReport()
     {
-        Coordinates coordinates = robot_->GetCoordinates();
+        Coordinates coordinates = robot_->GetLocation();
 
-        std::cout << coordinates.x << "," << coordinates.y << "," << robot_->GetFaceDirection() << std::endl;
+        std::cout << coordinates.GetX() << "," << coordinates.GetY() << "," << robot_->GetFaceDirection() << std::endl;
     }
 
     int Commander::GetAngleFromDirection( const std::string &face_direction )

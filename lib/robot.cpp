@@ -3,41 +3,29 @@
 
 namespace ToyRobot
 {
-    Robot::Robot( std::shared_ptr<Grid> grid )
+    Robot::Robot()
     {
-        grid_ = grid;
-    }
+        angle_direction_map_ =
+        {
+            { 0, "NORTH" },
+            { 90, "EAST" },
+            { 180, "SOUTH" },
+            { 270, "WEST" }
+        };
 
-    std::shared_ptr<Grid> Robot::GetGrid()
-    {
-        return grid_;
-    }
+        angle_move_map_ = 
+        {
+            { 0, Coordinates( 0, 1 ) },    // NORTH
+            { 90, Coordinates( 1, 0 ) },   // EAST
+            { 180, Coordinates( 0, -1 ) }, // SOUTH
+            { 270, Coordinates( -1, 0 ) }  // WEST
+        };
 
-    Coordinates Robot::GetCoordinates()
-    {
-        return coordinates_;
-    }
-
-    bool Robot::IsPlaced()
-    {
-        return is_placed_;
-    }
-
-    int Robot::GetFaceDirectionAngle()
-    {
-        return face_direction_angle_;
-    }
-
-    std::string Robot::GetFaceDirection()
-    {
-        return face_direction_;
-    }
-
-    void Robot::SetCoordinates( Coordinates coordinates )
-    {
-        coordinates_.x = coordinates.x;
-        coordinates_.y = coordinates.y;
-        is_placed_ = true;
+        rotation_map_ = 
+        {
+            { "LEFT", -90 },
+            { "RIGHT", 90 }
+        };
     }
 
     void Robot::SetFaceDirectionAngle( int degree )

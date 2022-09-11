@@ -1,6 +1,8 @@
 set( TARGET LIB_TOYROBOT )
 
 add_library( ${TARGET} 
+    coordinates.h
+    coordinates.cpp
     grid.h
     grid.cpp
     robot.h

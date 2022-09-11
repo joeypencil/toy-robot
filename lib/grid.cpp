@@ -3,16 +3,16 @@
 
 namespace ToyRobot
 {
-    Grid::Grid( const Coordinates &coordinates )
+    Grid::Grid( Coordinates dimensions )
     {
-        coordinates_.x = coordinates.x;
-        coordinates_.y = coordinates.y;
+        dimensions_.SetX( dimensions.GetX() );
+        dimensions_.SetY( dimensions.GetY() );
     }
 
-    bool Grid::IsWithinGrid( const Coordinates &coordinates ) const
+    bool Grid::IsWithinGrid( Coordinates coordinates )
     {
-        return ( ( coordinates.x >= 0 && coordinates.x <= coordinates_.x )
-            && ( coordinates.y >= 0 && coordinates.y <= coordinates_.y )
+        return ( ( coordinates.GetX() >= 0 && coordinates.GetX() <= dimensions_.GetX() )
+            && ( coordinates.GetY() >= 0 && coordinates.GetY() <= dimensions_.GetY() )
             ) ? true : false;
     }
 }

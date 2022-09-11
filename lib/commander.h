@@ -7,6 +7,7 @@
 #include <regex>
 #include <string>
 #include "input_reader.h"
+#include "grid.h"
 #include "robot.h"
 
 typedef std::regex Regex;
@@ -18,13 +19,15 @@ namespace ToyRobot
     class Commander
     {
         public:
-            Commander() = default;
+            Commander() = delete;
             ~Commander() = default;
-            Commander( std::shared_ptr<IInputReader> input_reader );
+
+            Commander( std::shared_ptr<IInputReader> input_reader, std::shared_ptr<IGrid> grid );
 
         private:
-            std::unique_ptr<Robot> robot_ = nullptr;
             std::shared_ptr<IInputReader> input_reader_ = nullptr;
+            std::shared_ptr<IGrid> grid_ = nullptr;
+            std::unique_ptr<Robot> robot_ = nullptr;
 
             const std::unordered_map<std::string, const Regex> command_regexes_
             {

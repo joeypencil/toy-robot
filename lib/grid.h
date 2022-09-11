@@ -1,34 +1,34 @@
 #ifndef TOYROBOT_GRID_H
 #define TOYROBOT_GRID_H
 
+#include "coordinates.h"
+
 
 namespace ToyRobot
 {
-    struct Coordinates
+    class IGrid
     {
-        int x;
-        int y;
+        public:
+            IGrid() = default;
+            virtual ~IGrid() = default;
 
-        Coordinates() = default;
-        Coordinates( int a, int b )
-        {
-            x = a;
-            y = b;
-        }
+        protected:
+            Coordinates dimensions_;
+
+        public:
+            virtual bool IsWithinGrid( Coordinates coordinates ) = 0;
     };
 
-    class Grid
+    class Grid : public IGrid
     {
         public:
             Grid() = delete;
             ~Grid() = default;
-            explicit Grid( const Coordinates &coordinates );
 
-        private:
-            Coordinates coordinates_;
+            explicit Grid( Coordinates dimensions );
 
         public:
-            bool IsWithinGrid( const Coordinates &coordinates ) const;
+            bool IsWithinGrid( Coordinates coordinates ) override;
     };
 }
 
