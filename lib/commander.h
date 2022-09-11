@@ -46,6 +46,9 @@ namespace ToyRobot
             void CommandMove();
             void CommandRotate( const Matches &matches );
             void CommandReport();
+
+        private:
+            int GetAngleFromDirection( const std::string &face_direction );
     };
 }
 

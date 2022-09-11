@@ -61,13 +61,7 @@ namespace ToyRobot
         if( ! robot_->GetGrid()->IsWithinGrid( Coordinates( x, y ) ) )
             return;
 
-        std::for_each( robot_->angle_direction_map_.begin(), robot_->angle_direction_map_.end(),
-            [&face_direction, &face_direction_angle]( const std::pair<int, std::string> &angle_map )
-            {
-                if( angle_map.second == face_direction )
-                    face_direction_angle = angle_map.first;
-            }
-        );
+        face_direction_angle = GetAngleFromDirection( face_direction );
 
         robot_->SetCoordinates( Coordinates( x, y ) );
         robot_->SetFaceDirectionAngle( face_direction_angle );
@@ -99,5 +93,20 @@ namespace ToyRobot
         Coordinates coordinates = robot_->GetCoordinates();
 
         std::cout << coordinates.x << "," << coordinates.y << "," << robot_->GetFaceDirection() << std::endl;
+    }
+
+    int Commander::GetAngleFromDirection( const std::string &face_direction )
+    {
+        int angle = 0;
+
+        std::for_each( robot_->angle_direction_map_.begin(), robot_->angle_direction_map_.end(),
+            [&face_direction, &angle]( const std::pair<int, std::string> &angle_map )
+            {
+                if( angle_map.second == face_direction )
+                    angle = angle_map.first;
+            }
+        );
+
+        return angle;
     }
 }
