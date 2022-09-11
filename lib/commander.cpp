@@ -71,8 +71,17 @@ namespace ToyRobot
     {
         Coordinates current_coordinates = robot_->GetCoordinates();
         int face_direction_angle = robot_->GetFaceDirectionAngle();
+        Coordinates pending_move;
         
-        Coordinates pending_move = robot_->angle_coordinates_map_.at( face_direction_angle );
+        try
+        {
+            pending_move = robot_->angle_coordinates_map_.at( face_direction_angle );
+        }
+        catch( std::out_of_range &ex )
+        {
+            std::cerr << "ERROR: No move coordinates found for angle " << face_direction_angle << std::endl;
+            return;
+        }
 
         Coordinates pending_location( current_coordinates.x + pending_move.x, current_coordinates.y + pending_move.y );
 
