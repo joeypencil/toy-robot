@@ -21,14 +21,14 @@ namespace ToyRobot
         file_path_ = file_path;
     }
 
-    void FileReader::ReadAllLines()
+    bool FileReader::ReadAllLines()
     {
         filestream_.open( file_path_ );
 
         if( ! filestream_.is_open() )
         {
             std::cerr << "ERROR: Unable to open file '" << file_path_ << "'" << std::endl;
-            exit( 1 );
+            return false;
         }
 
         while( ! filestream_.eof() )
@@ -44,6 +44,7 @@ namespace ToyRobot
         }
 
         filestream_.close();
+        return true;
     }
 
     bool FileReader::ReadCommand()
