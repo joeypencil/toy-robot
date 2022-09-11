@@ -25,6 +25,7 @@ int main( int argc, char *argv[] )
     {
         auto console_reader = std::make_shared<ConsoleReader>();
         commander = std::make_unique<Commander>( console_reader, grid );
+        std::cout << "--- TOY ROBOT program (enter a blank command to exit) ---" << std::endl;
     }
     else if( argc == 2 )
     {

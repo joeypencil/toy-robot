@@ -5,6 +5,7 @@ namespace ToyRobot
 {
     bool ConsoleReader::ReadCommand()
     {
+        std::cout << "Command for robot: ";
         std::getline( std::cin, command_ );
 
         if( ! command_.empty() )
