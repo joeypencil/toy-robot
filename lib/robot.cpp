@@ -5,6 +5,11 @@ namespace ToyRobot
 {
     Robot::Robot()
     {
+        FillNavigationMaps();
+    }
+
+    void Robot::FillNavigationMaps()
+    {
         angle_direction_map_ =
         {
             { 0, "NORTH" },

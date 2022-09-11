@@ -27,6 +27,9 @@ namespace ToyRobot
             std::unordered_map<int, Coordinates> angle_move_map_;
             std::unordered_map<std::string, int> rotation_map_;
 
+        protected:
+            virtual void FillNavigationMaps() = 0;
+
         public:
             Coordinates GetLocation() { return location_; }
             bool IsPlaced() { return is_placed_; }
@@ -48,6 +51,9 @@ namespace ToyRobot
         public:
             Robot();
             ~Robot() = default;
+
+        protected:
+            void FillNavigationMaps() override;
 
         public:
             void SetFaceDirectionAngle( int degree ) override;
