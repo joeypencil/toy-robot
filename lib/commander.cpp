@@ -78,15 +78,7 @@ namespace ToyRobot
         Coordinates current_coordinates = robot_->GetCoordinates();
         int face_direction_angle = robot_->GetFaceDirectionAngle();
         
-        Coordinates pending_move;
-
-        std::for_each( robot_->angle_coordinates_map_.begin(), robot_->angle_coordinates_map_.end(),
-            [&face_direction_angle, &pending_move]( const std::pair<int, Coordinates> &angle_map )
-            {
-                if( angle_map.first == face_direction_angle )
-                    pending_move = angle_map.second;
-            }
-        );
+        Coordinates pending_move = robot_->angle_coordinates_map_.at( face_direction_angle );
 
         Coordinates pending_location( current_coordinates.x + pending_move.x, current_coordinates.y + pending_move.y );
 
