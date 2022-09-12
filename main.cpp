@@ -15,9 +15,19 @@ int main( int argc, char *argv[] )
         return 1;
     }
 
-    int length = 4, width = 4;
+    int length = 0, width = 4;
     Coordinates dimensions( length, width );
-    auto grid = std::make_shared<Grid>( dimensions );
+    std::shared_ptr<Grid> grid = nullptr;
+
+    try
+    {
+        auto grid = std::make_shared<Grid>( dimensions );
+    }
+    catch( const char* ex )
+    {
+        std::cerr << ex << std::endl;
+        return EXIT_FAILURE;
+    }
 
     auto robot = std::make_unique<Robot>();
     std::unique_ptr<Commander> commander = nullptr;
