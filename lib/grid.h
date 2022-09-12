@@ -1,6 +1,8 @@
 #ifndef TOYROBOT_GRID_H
 #define TOYROBOT_GRID_H
 
+#include <iostream>
+#include <exception>
 #include "coordinates.h"
 
 

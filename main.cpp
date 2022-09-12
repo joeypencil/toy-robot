@@ -16,15 +16,9 @@ int main( int argc, char *argv[] )
     }
 
     int length = 4, width = 4;
-
-    if( length < 1 || width < 1 )
-    {
-        throw "ERROR: Invalid dimension values for grid.";
-        return 1;
-    }
-
     Coordinates dimensions( length, width );
     auto grid = std::make_shared<Grid>( dimensions );
+
     auto robot = std::make_unique<Robot>();
     std::unique_ptr<Commander> commander = nullptr;
 
