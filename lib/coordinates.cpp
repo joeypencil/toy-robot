@@ -3,7 +3,7 @@
 
 namespace ToyRobot
 {
-    Coordinates::Coordinates( const int &x, const int &y )
+    Coordinates::Coordinates( int x, int y )
     {
         x_ = x;
         y_ = y;

@@ -10,7 +10,7 @@ namespace ToyRobot
             Coordinates() = default;
             ~Coordinates() = default;
 
-            explicit Coordinates( const int &x, const int &y );
+            explicit Coordinates( int x, int y );
 
         private:
             int x_;
