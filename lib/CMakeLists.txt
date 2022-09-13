@@ -11,4 +11,6 @@ add_library( ${TARGET}
     input_reader.cpp
     commander.h
     commander.cpp
+    command.h
+    command.cpp
 )

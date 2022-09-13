@@ -3,13 +3,13 @@
 
 namespace ToyRobot
 {
-    Commander::Commander( std::shared_ptr<IInputReader> input_reader, std::shared_ptr<IGrid> grid )
+    Commander::Commander( InputReaderPtr input_reader, GridPtr grid )
     {
         input_reader_ = input_reader;
         grid_ = grid;
     }
 
-    void Commander::TrackRobot( std::shared_ptr<IRobot> robot )
+    void Commander::TrackRobot( RobotPtr robot )
     {
         robot_ = robot;
     }
@@ -27,17 +27,53 @@ namespace ToyRobot
         Matches matches;
 
         if( IsRegexMatch( command, matches, command_regexes_.at( "PLACE" ) ) )
-            CommandPlace( matches );
+        {
+            if( matches.size() < 5 )
+                return;
+
+            int x, y;
+            std::string face_direction;
+            int face_direction_angle;
+
+            x = stoi( matches.str( 2 ) );
+            y = stoi( matches.str( 3 ) );
+            face_direction = matches.str( 4 );
+
+            CommandPlace command_place;
+            command_place.SetGrid( grid_ );
+            command_place.SetRobot( robot_ );
+            command_place.SetLocation( Coordinates( x, y ) );
+            command_place.SetFaceDirection( face_direction );
+            command_place.Execute();
+        }
         else
         {
             if( robot_->IsPlaced() )
             {
-                if( IsRegexMatch( command, matches, command_regexes_.at( "REPORT" ) ) )
-                    CommandReport();
-                else if( IsRegexMatch( command, matches, command_regexes_.at( "MOVE" ) ) )
-                    CommandMove();
+                if( IsRegexMatch( command, matches, command_regexes_.at( "MOVE" ) ) )
+                {
+                    CommandMove command_move;
+                    command_move.SetGrid( grid_ );
+                    command_move.SetRobot( robot_ );
+                    command_move.Execute();
+                }
                 else if( IsRegexMatch( command, matches, command_regexes_.at( "ROTATE" ) ) )
-                    CommandRotate( matches );
+                {
+                    std::string rotation_direction = matches.str( 1 );
+
+                    CommandRotate command_rotate;
+                    command_rotate.SetGrid( grid_ );
+                    command_rotate.SetRobot( robot_ );
+                    command_rotate.SetRotationDirection( rotation_direction );
+                    command_rotate.Execute();
+                }
+                else if( IsRegexMatch( command, matches, command_regexes_.at( "REPORT" ) ) )
+                {
+                    CommandReport command_report;
+                    command_report.SetGrid( grid_ );
+                    command_report.SetRobot( robot_ );
+                    command_report.Execute();
+                }
             }
         }
     }
@@ -45,82 +81,5 @@ namespace ToyRobot
     bool Commander::IsRegexMatch( const std::string &command, Matches &matches, const Regex &regex )
     {
         return ( std::regex_search( command, matches, regex ) ) ? true : false;
-    }
-
-    void Commander::CommandPlace( const Matches &matches )
-    {
-        if( matches.size() < 5 )
-            return;
-
-        int x, y;
-        std::string face_direction;
-        int face_direction_angle;
-
-        x = stoi( matches.str( 2 ) );
-        y = stoi( matches.str( 3 ) );
-        face_direction = matches.str( 4 );
-
-        if( ! grid_->IsWithinGrid( Coordinates( x, y ) ) )
-            return;
-
-        face_direction_angle = GetAngleFromDirection( face_direction );
-
-        robot_->SetLocation( Coordinates( x, y ) );
-        robot_->SetFaceDirectionAngle( face_direction_angle );
-    }
-
-    void Commander::CommandMove()
-    {
-        Coordinates current_location = robot_->GetLocation();
-        int face_direction_angle = robot_->GetFaceDirectionAngle();
-        Coordinates pending_move;
-        
-        try
-        {
-            pending_move = robot_->angle_move_map_.at( face_direction_angle );
-        }
-        catch( std::out_of_range &ex )
-        {
-            std::cerr << "ERROR: No move coordinates found for angle " << face_direction_angle << std::endl;
-            return;
-        }
-
-        int pending_x = current_location.GetX() + pending_move.GetX();
-        int pending_y = current_location.GetY() + pending_move.GetY();
-
-        Coordinates pending_location( pending_x, pending_y );
-
-        if( grid_->IsWithinGrid( pending_location ) )
-            robot_->SetLocation( pending_location );
-    }
-
-    void Commander::CommandRotate( const Matches &matches )
-    {
-        int current_face_direction_angle = robot_->GetFaceDirectionAngle();
-        std::string &rotation_direction = matches.str( 1 );
-        
-        robot_->SetFaceDirectionAngle( current_face_direction_angle + robot_->rotation_map_.at( rotation_direction ) );
-    }
-
-    void Commander::CommandReport()
-    {
-        Coordinates coordinates = robot_->GetLocation();
-
-        std::cout << coordinates.GetX() << "," << coordinates.GetY() << "," << robot_->GetFaceDirection() << std::endl;
-    }
-
-    int Commander::GetAngleFromDirection( const std::string &face_direction )
-    {
-        int angle = 0;
-
-        std::for_each( robot_->angle_direction_map_.begin(), robot_->angle_direction_map_.end(),
-            [&face_direction, &angle]( const std::pair<int, std::string> &angle_map )
-            {
-                if( angle_map.second == face_direction )
-                    angle = angle_map.first;
-            }
-        );
-
-        return angle;
     }
 }

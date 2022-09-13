@@ -2,16 +2,18 @@
 #define TOYROBOT_COMMANDER_H
 
 #include <memory>
-#include <queue>
 #include <unordered_map>
 #include <regex>
-#include <string>
 #include "input_reader.h"
 #include "grid.h"
 #include "robot.h"
+#include "command.h"
 
 typedef std::regex Regex;
 typedef std::smatch Matches;
+typedef std::shared_ptr<ToyRobot::IInputReader> InputReaderPtr;
+typedef std::shared_ptr<ToyRobot::IGrid> GridPtr;
+typedef std::shared_ptr<ToyRobot::IRobot> RobotPtr;
 
 
 namespace ToyRobot
@@ -22,12 +24,12 @@ namespace ToyRobot
             Commander() = delete;
             ~Commander() = default;
 
-            Commander( std::shared_ptr<IInputReader> input_reader, std::shared_ptr<IGrid> grid );
+            Commander( InputReaderPtr input_reader, GridPtr grid );
 
         private:
-            std::shared_ptr<IInputReader> input_reader_ = nullptr;
-            std::shared_ptr<IGrid> grid_ = nullptr;
-            std::shared_ptr<IRobot> robot_ = nullptr;
+            InputReaderPtr input_reader_ = nullptr;
+            GridPtr grid_ = nullptr;
+            RobotPtr robot_ = nullptr;
 
             const std::unordered_map<std::string, const Regex> command_regexes_
             {
@@ -38,20 +40,12 @@ namespace ToyRobot
             };
 
         public:
-            void TrackRobot( std::shared_ptr<IRobot> robot );
+            void TrackRobot( RobotPtr robot );
             void PlayWithRobot();
             void InterpretCommand( std::string &command );
 
         private:
             bool IsRegexMatch( const std::string &command, Matches &matches, const Regex &regex );
-
-            void CommandPlace( const Matches &matches );
-            void CommandMove();
-            void CommandRotate( const Matches &matches );
-            void CommandReport();
-
-        private:
-            int GetAngleFromDirection( const std::string &face_direction );
     };
 }
 
