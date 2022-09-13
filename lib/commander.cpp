@@ -9,9 +9,9 @@ namespace ToyRobot
         grid_ = grid;
     }
 
-    void Commander::TrackRobot( std::unique_ptr<Robot> robot )
+    void Commander::TrackRobot( std::shared_ptr<IRobot> robot )
     {
-        robot_ = move( robot );
+        robot_ = robot;
     }
 
     void Commander::PlayWithRobot()

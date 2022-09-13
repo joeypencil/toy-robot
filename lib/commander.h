@@ -27,7 +27,7 @@ namespace ToyRobot
         private:
             std::shared_ptr<IInputReader> input_reader_ = nullptr;
             std::shared_ptr<IGrid> grid_ = nullptr;
-            std::unique_ptr<Robot> robot_ = nullptr;
+            std::shared_ptr<IRobot> robot_ = nullptr;
 
             const std::unordered_map<std::string, const Regex> command_regexes_
             {
@@ -38,7 +38,7 @@ namespace ToyRobot
             };
 
         public:
-            void TrackRobot( std::unique_ptr<Robot> robot );
+            void TrackRobot( std::shared_ptr<IRobot> robot );
             void PlayWithRobot();
             void InterpretCommand( std::string &command );
 

@@ -28,8 +28,8 @@ int main( int argc, char *argv[] )
         std::cerr << ex << std::endl;
         return EXIT_FAILURE;
     }
-
-    auto robot = std::make_unique<Robot>();
+    
+    auto robot = std::make_shared<Robot>();
     std::unique_ptr<Commander> commander = nullptr;
 
     if( argc < 2 )
@@ -50,7 +50,7 @@ int main( int argc, char *argv[] )
         commander = std::make_unique<Commander>( file_reader, grid );
     }
 
-    commander->TrackRobot( move( robot ) );
+    commander->TrackRobot( robot );
     commander->PlayWithRobot();
 
     return 0;
