@@ -15,7 +15,7 @@ int main( int argc, char *argv[] )
         return 1;
     }
 
-    int length = 0, width = 4;
+    int length = 4, width = 4;
     Coordinates dimensions( length, width );
     std::shared_ptr<Grid> grid = nullptr;
 
