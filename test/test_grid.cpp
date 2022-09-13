@@ -1,3 +1,6 @@
+#ifndef TOYROBOT_GRID_CPP_UT
+#define TOYROBOT_GRID_CPP_UT
+
 #include <gtest/gtest.h>
 #include <memory>
 #include "coordinates.h"
@@ -29,3 +32,5 @@ namespace ToyRobotUnitTest
         EXPECT_THROW( Grid grid( dimension_negative ), const char* );
     }
 }
+
+#endif
