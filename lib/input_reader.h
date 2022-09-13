@@ -48,6 +48,8 @@ namespace ToyRobot
         public:
             void SetFilepath( const std::string &file_path );
             bool ReadAllLines();
+
+        public:
             bool ReadCommand() override;
     };
 
