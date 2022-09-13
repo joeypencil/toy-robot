@@ -21,7 +21,7 @@ int main( int argc, char *argv[] )
 
     try
     {
-        auto grid = std::make_shared<Grid>( dimensions );
+        grid = std::make_shared<Grid>( dimensions );
     }
     catch( const char* ex )
     {
