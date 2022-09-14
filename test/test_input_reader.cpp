@@ -9,21 +9,21 @@ using namespace ToyRobot;
 
 namespace ToyRobotUnitTest
 {
-    TEST( InputReaderTest, CanTrimLeadingSpaces )
+    TEST( InputReaderTest, Can_trim_leading_spaces )
     {
         std::string command = "   move";
         trim_left( command );
         EXPECT_EQ( command, "move" );
     }
 
-    TEST( InputReaderTest, CanTrimTrailingSpaces )
+    TEST( InputReaderTest, Can_trim_trailing_spaces )
     {
         std::string command = "report   ";
         trim_right( command );
         EXPECT_EQ( command, "report" );
     }
 
-    TEST( InputReaderTest, CanCleanCommand )
+    TEST( InputReaderTest, Can_clean_command )
     {
         std::string command_rotate = "  left   ";
         clean_command( command_rotate );

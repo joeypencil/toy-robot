@@ -11,7 +11,7 @@ using namespace ToyRobot;
 
 namespace ToyRobotUnitTest
 {
-    TEST( GridTest, CanCheckLocations )
+    TEST( GridTest, Can_check_locations )
     {
         Coordinates dimensions( 4, 4 );
         auto grid = std::make_shared<Grid>( dimensions );
@@ -23,7 +23,7 @@ namespace ToyRobotUnitTest
         EXPECT_FALSE( grid->IsWithinGrid( location_invalid ) );
     }
 
-    TEST( GridTest, WillThrowOnInvalidDimensions )
+    TEST( GridTest, Will_throw_on_invalid_dimensions )
     {
         Coordinates dimension_zero( 0, 4 );
         EXPECT_THROW( Grid grid( dimension_zero ), const char* );
