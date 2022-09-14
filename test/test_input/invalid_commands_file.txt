@@ -1,0 +1,17 @@
+a) ------
+This is where the fun begins!
+MOVE
+RIGHT
+LEFT
+
+b) ######
+Okay, time to get serious.
+PLACE 4,4,SOUTH
+MOVE
+MOVE
+RIGHT
+MOVE
+
+c) xxxxxx
+Let's end this...
+REPORT

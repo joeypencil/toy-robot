@@ -1,0 +1,11 @@
+plAcE 2,2,west
+
+MoVe
+rigHt
+
+movE
+MOVe
+
+RIGhT
+
+rEpOrT
