@@ -23,9 +23,9 @@ namespace ToyRobotUnitTest
             }
 
         public:
-            std::shared_ptr<ConsoleReader> input_reader_ = nullptr;
+            InputReaderPtr input_reader_ = nullptr;
 
-            std::shared_ptr<Grid> grid_ = nullptr;
+            GridPtr grid_ = nullptr;
             Coordinates dimensions_;
 
             std::unique_ptr<Commander> commander_ = nullptr;
