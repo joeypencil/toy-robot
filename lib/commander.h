@@ -34,7 +34,7 @@ namespace ToyRobot
         public:
             const std::unordered_map<std::string, const Regex> command_regexes_
             {
-                { "PLACE", Regex( "(PLACE)\\s+(\\d+),\\s*(\\d+),\\s*(NORTH|SOUTH|EAST|WEST)" ) },
+                { "PLACE", Regex( "(PLACE)\\s+(\\d+)\\s*,\\s*(\\d+)\\s*,\\s*(NORTH|SOUTH|EAST|WEST)" ) },
                 { "MOVE", Regex( "(MOVE)" ) },
                 { "ROTATE", Regex( "(LEFT|RIGHT)" ) },
                 { "REPORT", Regex( "(REPORT)" ) },
