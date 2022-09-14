@@ -72,7 +72,7 @@ namespace ToyRobot
     void CommandReport::Execute()
     {
         Coordinates coordinates = robot_->GetLocation();
-
-        std::cout << coordinates.GetX() << "," << coordinates.GetY() << "," << robot_->GetFaceDirection() << std::endl;
+        
+        std::cout << "Robot status: " << coordinates.GetX() << "," << coordinates.GetY() << "," << robot_->GetFaceDirection() << std::endl;
     }
 }
