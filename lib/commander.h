@@ -31,6 +31,7 @@ namespace ToyRobot
             GridPtr grid_ = nullptr;
             RobotPtr robot_ = nullptr;
 
+        public:
             const std::unordered_map<std::string, const Regex> command_regexes_
             {
                 { "PLACE", Regex( "(PLACE)\\s+(\\d+),\\s*(\\d+),\\s*(NORTH|SOUTH|EAST|WEST)" ) },
@@ -43,9 +44,7 @@ namespace ToyRobot
             void TrackRobot( RobotPtr robot );
             void PlayWithRobot();
             void InterpretCommand( std::string &command );
-
-        private:
-            bool IsRegexMatch( const std::string &command, Matches &matches, const Regex &regex );
+            static bool IsRegexMatch( const std::string &command, Matches &matches, const Regex &regex );
     };
 }
 
