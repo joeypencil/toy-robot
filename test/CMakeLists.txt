@@ -16,6 +16,7 @@ add_executable( ${TARGET_TEST}
     test_grid.cpp
     test_input_reader.cpp
     test_robot.cpp
+    test_commander.cpp
 )
 target_link_libraries(
     ${TARGET_TEST}
