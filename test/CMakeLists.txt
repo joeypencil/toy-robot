@@ -17,6 +17,7 @@ add_executable( ${TARGET_TEST}
     test_input_reader.cpp
     test_robot.cpp
     test_commander.cpp
+    test_command.cpp
 )
 target_link_libraries(
     ${TARGET_TEST}
