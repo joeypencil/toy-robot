@@ -14,6 +14,7 @@ enable_testing()
 set( TARGET_TEST toy_robot_unit_test )
 add_executable( ${TARGET_TEST}
     test_grid.cpp
+    test_input_reader.cpp
 )
 target_link_libraries(
     ${TARGET_TEST}

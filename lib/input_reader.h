@@ -53,9 +53,9 @@ namespace ToyRobot
             bool ReadCommand() override;
     };
 
-    static void trim_left( std::string &command );
-    static void trim_right( std::string &command );
-    static void clean_command( std::string &command );
+    void trim_left( std::string &command );
+    void trim_right( std::string &command );
+    void clean_command( std::string &command );
 }
 
 #endif
