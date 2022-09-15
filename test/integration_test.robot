@@ -7,35 +7,35 @@ Suite Setup     Check directory variables initialization
 
 
 *** Test Cases ***
-Program should be able to process optimal input file
+Robot should be able to process commands from optimal input file
     [Tags]   File   Normal input
     ${result} =   Run program with input file   optimal_file
     @{reports} =   Clean output and get report command results from console   ${result}
     Should Be Equal As Strings   ${reports}[0]   1,1,WEST   strip_spaces=True
 
 
-Program should be able to process input file with blank lines
+Robot should be able to process commands from input file with blank lines
     [Tags]   File   Normal input
     ${result} =   Run program with input file   blank_lines_file
     @{reports} =   Clean output and get report command results from console   ${result}
     Should Be Equal As Strings   ${reports}[0]   3,1,WEST   strip_spaces=True
 
 
-Program should be able to process input file with mixed casing lines
+Robot should be able to process commands from input file with mixed casing lines
     [Tags]   File   Distorted input
     ${result} =   Run program with input file   mixed_casing_file
     @{reports} =   Clean output and get report command results from console   ${result}
     Should Be Equal As Strings   ${reports}[0]   1,4,EAST   strip_spaces=True
 
 
-Program should be able to process input file with invalid command lines
+Robot should be able to process commands from input file with invalid command lines
     [Tags]   File   Distorted input
     ${result} =   Run program with input file   invalid_commands_file
     @{reports} =   Clean output and get report command results from console   ${result}
     Should Be Equal As Strings   ${reports}[0]   3,2,WEST   strip_spaces=True
 
 
-Program should be able to process input file with multiple report lines
+Robot should be able to process commands from input file with multiple report lines
     [Tags]   File   Normal input
     ${result} =   Run program with input file   multiple_reports_file
     @{reports} =   Clean output and get report command results from console   ${result}
@@ -44,28 +44,28 @@ Program should be able to process input file with multiple report lines
     Should Be Equal As Strings   ${reports}[2]   2,3,EAST   strip_spaces=True
 
 
-Program should be able to process console input with optimal commands
+Robot should be able to process console input with optimal commands
     [Tags]   Console   Normal input
     ${result} =   Run program with console input   PLACE 1,3,NORTH\nLEFT\nLEFT\nLEFT\nMOVE\nMOVE\nREPORT
     @{reports} =   Clean output and get report command results from console   ${result.stdout}
     Should Be Equal As Strings   ${reports}[0]   3,3,EAST   strip_spaces=True
 
 
-Program should be able to process console input with mixed casing commands
+Robot should be able to process console input with mixed casing commands
     [Tags]   Console   Distorted input
     ${result} =   Run program with console input   plACE 2,2,eASt\nmovE\nMOVe\nlEfT\nreporT
     @{reports} =   Clean output and get report command results from console   ${result.stdout}
     Should Be Equal As Strings   ${reports}[0]   4,2,NORTH   strip_spaces=True
 
 
-Program should be able to process console input with invalid commands
+Robot should be able to process console input with invalid commands
     [Tags]   Console   Distorted input
     ${result} =   Run program with console input   Let's test this program\nmove\nright\nleft\nabove\nplace 0,0,north\nmove\oops invalid\nreport
     @{reports} =   Clean output and get report command results from console   ${result.stdout}
     Should Be Equal As Strings   ${reports}[0]   0,1,NORTH   strip_spaces=True
 
 
-Program should be able to process console input with multiple report commands
+Robot should be able to process console input with multiple report commands
     [Tags]   Console   Normal input
     ${result} =   Run program with console input   place 1,2,west\nright\nright\nmove\nmove\nreport\nleft\nmove\nmove\nmove\nreport\nleft\nmove\nmove\nleft\nmove\nreport
     @{reports} =   Clean output and get report command results from console   ${result.stdout}

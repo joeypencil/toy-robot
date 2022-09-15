@@ -105,7 +105,7 @@ To run the integration tests, a few additional setup steps must be taken.
 1. Install the `robotframework` Python module by executing the following command: `python -m pip install robotframework`.
     * To check if you have done this correctly, execute the command `python -m pip show robotframework`. You should see the version of `robotframework` displayed.
 
-1. Change directory to the project's *test* directory (where the `integration_test.py` file is located), then run the following command: `python -m robot -v RELEASE_DIR:<full path to the Release folder where toy_robot.exe is located> -v TEST_DIR:<full path to the project's test directory where integration_test.py is located> integration_test.py`. ***It is crucial that the full paths be provided; relative paths won't work.***
+1. Change directory to the project's *test* directory (where the `integration_test.robot` file is located), then run the following command: `python -m robot -v RELEASE_DIR:<full path to the Release folder where toy_robot.exe is located> -v TEST_DIR:<full path to the project's test directory where integration_test.robot is located> integration_test.robot`. ***It is crucial that the full paths be provided; relative paths won't work.***
 
 1. You can see in the current working directory that there were 3 files generated: `log.html`, `report.html`, and `output.xml`.
     * `log.html` - contains test statistics and execution logs.
