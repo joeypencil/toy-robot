@@ -3,13 +3,11 @@
 
 namespace ToyRobot
 {
-    void CommandPlace::SetLocation( Coordinates location )
+    CommandPlace::CommandPlace( GridPtr grid, RobotPtr robot, Coordinates location, std::string &face_direction )
     {
+        grid_ = grid;
+        robot_ = robot;
         location_ = location;
-    }
-
-    void CommandPlace::SetFaceDirection( std::string &face_direction )
-    {
         face_direction_ = face_direction;
     }
 
@@ -30,6 +28,12 @@ namespace ToyRobot
 
         robot_->SetLocation( location_ );
         robot_->SetFaceDirectionAngle( angle );
+    }
+
+    CommandMove::CommandMove( GridPtr grid, RobotPtr robot )
+    {
+        grid_ = grid;
+        robot_ = robot;
     }
 
     void CommandMove::Execute()
@@ -57,8 +61,9 @@ namespace ToyRobot
             robot_->SetLocation( pending_location );
     }
 
-    void CommandRotate::SetRotationDirection( std::string &rotation_direction )
+    CommandRotate::CommandRotate( RobotPtr robot, std::string &rotation_direction )
     {
+        robot_ = robot;
         rotation_direction_ = rotation_direction;
     }
 
@@ -67,6 +72,11 @@ namespace ToyRobot
         int current_face_direction_angle = robot_->GetFaceDirectionAngle();
         
         robot_->SetFaceDirectionAngle( current_face_direction_angle + robot_->rotation_map_.at( rotation_direction_ ) );
+    }
+
+    CommandReport::CommandReport( RobotPtr robot )
+    {
+        robot_ = robot;
     }
 
     void CommandReport::Execute()

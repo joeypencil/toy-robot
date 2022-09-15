@@ -39,12 +39,8 @@ namespace ToyRobot
             y = stoi( matches.str( 3 ) );
             face_direction = matches.str( 4 );
 
-            CommandPlace command_place;
-            command_place.SetGrid( grid_ );
-            command_place.SetRobot( robot_ );
-            command_place.SetLocation( Coordinates( x, y ) );
-            command_place.SetFaceDirection( face_direction );
-            command_place.Execute();
+            CommandController controller( std::make_unique<CommandPlace>( grid_, robot_, Coordinates( x, y ), face_direction ) );
+            controller.Execute();
         }
         else
         {
@@ -52,27 +48,20 @@ namespace ToyRobot
             {
                 if( IsRegexMatch( command, matches, command_regexes_.at( "MOVE" ) ) )
                 {
-                    CommandMove command_move;
-                    command_move.SetGrid( grid_ );
-                    command_move.SetRobot( robot_ );
-                    command_move.Execute();
+                    CommandController controller( std::make_unique<CommandMove>( grid_, robot_ ) );
+                    controller.Execute();
                 }
                 else if( IsRegexMatch( command, matches, command_regexes_.at( "ROTATE" ) ) )
                 {
                     std::string rotation_direction = matches.str( 1 );
 
-                    CommandRotate command_rotate;
-                    command_rotate.SetGrid( grid_ );
-                    command_rotate.SetRobot( robot_ );
-                    command_rotate.SetRotationDirection( rotation_direction );
-                    command_rotate.Execute();
+                    CommandController controller( std::make_unique<CommandRotate>( robot_, rotation_direction ) );
+                    controller.Execute();
                 }
                 else if( IsRegexMatch( command, matches, command_regexes_.at( "REPORT" ) ) )
                 {
-                    CommandReport command_report;
-                    command_report.SetGrid( grid_ );
-                    command_report.SetRobot( robot_ );
-                    command_report.Execute();
+                    CommandController controller( std::make_unique<CommandReport>( robot_ ) );
+                    controller.Execute();
                 }
             }
         }

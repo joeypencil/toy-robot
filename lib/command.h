@@ -19,13 +19,9 @@ namespace ToyRobot
             Command() = default;
             virtual ~Command() = default;
 
-        public:
+        protected:
             GridPtr grid_ = nullptr;
             RobotPtr robot_ = nullptr;
-
-        public:
-            void SetGrid( GridPtr grid ) { grid_ = grid; }
-            void SetRobot( RobotPtr robot ) { robot_ = robot; }
 
         public:
             virtual void Execute() = 0;
@@ -34,16 +30,14 @@ namespace ToyRobot
     class CommandPlace : public Command
     {
         public:
-            CommandPlace() = default;
+            CommandPlace() = delete;
             ~CommandPlace() = default;
+
+            CommandPlace( GridPtr grid, RobotPtr robot, Coordinates location, std::string &face_direction );
 
         private:
             Coordinates location_;
             std::string face_direction_;
-
-        public:
-            void SetLocation( Coordinates location );
-            void SetFaceDirection( std::string &face_direction );
 
         public:
             void Execute() override;
@@ -52,8 +46,10 @@ namespace ToyRobot
     class CommandMove : public Command
     {
         public:
-            CommandMove() = default;
+            CommandMove() = delete;
             ~CommandMove() = default;
+
+            CommandMove( GridPtr grid, RobotPtr robot );
 
         public:
             void Execute() override;
@@ -62,14 +58,13 @@ namespace ToyRobot
     class CommandRotate : public Command
     {
         public:
-            CommandRotate() = default;
+            CommandRotate() = delete;
             ~CommandRotate() = default;
+
+            CommandRotate( RobotPtr robot, std::string &rotation_direction );
 
         private:
             std::string rotation_direction_;
-
-        public:
-            void SetRotationDirection( std::string &rotation_direction );
 
         public:
             void Execute() override;
@@ -78,8 +73,10 @@ namespace ToyRobot
     class CommandReport : public Command
     {
         public:
-            CommandReport() = default;
+            CommandReport() = delete;
             ~CommandReport() = default;
+
+            CommandReport( RobotPtr robot );
 
         public:
             void Execute() override;

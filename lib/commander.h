@@ -8,6 +8,7 @@
 #include "grid.h"
 #include "robot.h"
 #include "command.h"
+#include "command_controller.h"
 
 typedef std::regex Regex;
 typedef std::smatch Matches;

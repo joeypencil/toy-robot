@@ -13,4 +13,5 @@ add_library( ${TARGET}
     commander.cpp
     command.h
     command.cpp
+    command_controller.h
 )

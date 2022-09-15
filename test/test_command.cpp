@@ -3,6 +3,7 @@
 
 #include <gtest/gtest.h>
 #include "command.h"
+#include "command_controller.h"
 
 using namespace ToyRobot;
 
@@ -42,18 +43,8 @@ namespace ToyRobotUnitTest
         public:
             void PlaceRobot()
             {
-                CommandPlace command_place;
-                command_place.SetGrid( grid_ );
-                command_place.SetRobot( robot_ );
-                command_place.SetLocation( location_ );
-                command_place.SetFaceDirection( face_direction_ );
-                command_place.Execute();
-            }
-
-            void PrepareCommand( std::shared_ptr<Command> command )
-            {
-                command->SetGrid( grid_ );
-                command->SetRobot( robot_ );
+                CommandController controller( std::make_unique<CommandPlace>( grid_, robot_, location_, face_direction_ ) );
+                controller.Execute();
             }
 
             void ObtainRobotStatus()
@@ -69,11 +60,7 @@ namespace ToyRobotUnitTest
 
     TEST_F( CommandTest, Can_execute_command_place )
     {
-        auto command_place = std::make_shared<CommandPlace>();
-        PrepareCommand( command_place );
-        command_place->SetLocation( location_ );
-        command_place->SetFaceDirection( face_direction_ );
-        command_place->Execute();
+        PlaceRobot();
 
         ObtainRobotStatus();
         EXPECT_EQ( robot_status_.current_x_, 1 );
@@ -86,9 +73,8 @@ namespace ToyRobotUnitTest
     {
         PlaceRobot();
         
-        auto command_move = std::make_shared<CommandMove>();
-        PrepareCommand( command_move );
-        command_move->Execute();
+        CommandController controller( std::make_unique<CommandMove>( grid_, robot_ ) );
+        controller.Execute();
 
         ObtainRobotStatus();
         EXPECT_EQ( robot_status_.current_x_, 1 );
@@ -102,19 +88,17 @@ namespace ToyRobotUnitTest
         std::string left = "LEFT";
         std::string right = "RIGHT";
 
-        auto command_rotate = std::make_shared<CommandRotate>();
-        PrepareCommand( command_rotate );
-        command_rotate->SetRotationDirection( left );
-        command_rotate->Execute();
+        CommandController controller_left( std::make_unique<CommandRotate>( robot_, left ) );
+        controller_left.Execute();
 
         ObtainRobotStatus();
         EXPECT_EQ( robot_status_.current_x_, 1 );
         EXPECT_EQ( robot_status_.current_y_, 1 );
         EXPECT_EQ( robot_status_.current_face_direction_, "WEST" );
 
-        command_rotate->SetRotationDirection( right );
-        command_rotate->Execute();
-        command_rotate->Execute();
+        CommandController controller_right( std::make_unique<CommandRotate>( robot_, right ) );
+        controller_right.Execute();
+        controller_right.Execute();
 
         ObtainRobotStatus();
         EXPECT_EQ( robot_status_.current_x_, 1 );
