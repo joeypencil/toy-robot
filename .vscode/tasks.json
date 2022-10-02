@@ -1,0 +1,49 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "CMake: Compile solution",
+            "command": "cmake",
+            "args": [
+                "-S",
+                "${workspaceFolder}",
+                "-B",
+                "${workspaceFolder}/build"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "CMake: Build solution",
+            "dependsOn": ["CMake: Compile solution"],
+            "command": "cmake",
+            "args": [
+                "--build",
+                "${workspaceFolder}/build",
+                "--config",
+                "Release"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Test: Run integration tests",
+            "command": "python",
+            "args": [
+                "-m",
+                "robot",
+                "-v",
+                "RELEASE_DIR:${workspaceFolder}/build/Release",
+                "-v",
+                "TEST_DIR:${workspaceFolder}/test",
+                "--log",
+                "${workspaceFolder}/test/robot_results/toy-robot-log.html",
+                "--report",
+                "${workspaceFolder}/test/robot_results/toy-robot-report.html",
+                "--output",
+                "${workspaceFolder}/test/robot_results/toy-robot-output.xml",
+                "${workspaceFolder}/test/integration_test.robot"
+            ],
+            "problemMatcher": []
+        }
+    ]
+    
+}
